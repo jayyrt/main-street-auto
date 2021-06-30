@@ -31,8 +31,8 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     axios.get('https://joes-autos.herokuapp.com/api/vehicles')
-    .then( results  => {
-      this.setState({ vehiclesToDisplay: Response.data });
+    .then( res => {
+      this.setState({ vehiclesToDisplay: res.data });
       toast.success("Successfully got Vehicles.")})
     .catch( (err) => toast.error("Failed at fetching Vehicles") );
     // setState with response -> vehiclesToDisplay
@@ -46,6 +46,12 @@ class App extends Component {
 
   sellCar(id) {
     // axios (DELETE)
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${ id }`)
+    .then( (res) => {
+      this.setState({ vehiclesToDisplay: res.data.vehicles });
+      toast.success("Successfully sold car")
+    })
+    .catch( (res) => toast.error("Failed at selling car") );
     // setState with response -> vehiclesToDisplay
   }
 
@@ -68,10 +74,10 @@ class App extends Component {
     axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
     // setState with response -> vehiclesToDisplay
     .then((res) => {
-      this.setState({ vehiclesToDisplay: res.data });
+      this.setState({ vehiclesToDisplay: res.data.vehicles });
       toast.success("Price successfully updated")
     })
-    .catch((err) => toast.error(err.code))
+    .catch( (err) => toast.error('Failed to update price') );
   }
 
   addCar() {
@@ -84,10 +90,10 @@ class App extends Component {
     }
     axios.post(`https://joes-autos.herokuapp.com/api/vehicles`, newCar) 
     .then ((res) => {
-      this.setState({ vehiclesToDisplay: res.data });
+      this.setState({ vehiclesToDisplay: res.data.vehicles });
       toast.success(`${newCar.make} ${newCar.model} successfully added`);
     })
-    .catch((err) => toast.error(err))
+    .catch( (err) => toast.error('Failed to add new vehicle') );
     // axios (POST)
     // setState with response -> vehiclesToDisplay
   }
@@ -104,6 +110,7 @@ class App extends Component {
 
   deleteBuyer(id) {
     // axios (DELETE)
+    axios.delete(``)
     //setState with response -> buyersToDisplay
   }
 
